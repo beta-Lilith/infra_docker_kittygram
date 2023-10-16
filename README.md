@@ -26,6 +26,7 @@ git clone https://github.com/beta-Lilith/kittygram_final.git
   
 Добавить секреты для Actions на GitHub:  
 (kittygram_final -> Settings -> Secrets and variables -> Actions)  
+  
 `DOCKER_PASSWORD` - пароль учетной записи DockerHub  
 `DOCKER_USERNAME` - имя пользователя учетной записи Docker Hub  
 `HOST` - ip-адресс вашего удаленного сервера  
