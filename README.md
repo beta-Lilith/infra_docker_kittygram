@@ -1,26 +1,104 @@
-#  Как работать с репозиторием финального задания
-
-## Что нужно сделать
-
-Настроить запуск проекта Kittygram в контейнерах и CI/CD с помощью GitHub Actions
-
-## Как проверить работу с помощью автотестов
-
-В корне репозитория создайте файл tests.yml со следующим содержимым:
-```yaml
-repo_owner: ваш_логин_на_гитхабе
-kittygram_domain: полная ссылка (https://доменное_имя) на ваш проект Kittygram
-taski_domain: полная ссылка (https://доменное_имя) на ваш проект Taski
-dockerhub_username: ваш_логин_на_докерхабе
+![main workflow badge](https://github.com/beta-Lilith/kittygram_final/actions/workflows/main.yml/badge.svg)  
+  
+# KITTYGRAM – СОЦИАЛЬНАЯ СЕТЬ ВЛАДЕЛЬЦЕВ КОТИКОВ. УЧЕБНЫЙ ПРОЕКТ Я.ПРАКТИКУМ.  
+  
+## ОПИСАНИЕ ПРОЕКТА  
+Пользователи могут регистрироваться, добавлять, редактировать, удалять свои записи о котиках с фотографиями и без, могут просматривать записи чужих котиков. Стандартная админка Django.  
+Цель проекта: научиться работать с Docker, Docker Hub, CI/CD с помощью GitHub Actions.  
+  
+## ТЕХНОЛОГИИ
+- Python 3.9
+- Django 3.2.3
+- Django REST Framework 3.12.4
+- Linux Ubuntu
+- Yandex Cloud
+- Nginx
+- Gunicorn
+- Docker
+- GitHub Actions
+  
+## ЗАПУСТИТЬ ПРОЕКТ:
+  
+Клонировать репозиторий:
 ```
+git clone https://github.com/beta-Lilith/kittygram_final.git 
+```
+  
+Добавить секреты для Actions на GitHub:
+(kittygram_final -> Settings -> Secrets and variables -> Actions)
+`DOCKER_PASSWORD` - пароль учетной записи DockerHub
+`DOCKER_USERNAME` - имя пользователя учетной записи Docker Hub
+`HOST` - ip-адресс вашего удаленного сервера
+`USER` - имя пользователя на удаленном сервере
+`SSH_KEY` - закрытый SSH ключ от удаленного сервера
+`SSH_PASSPHRASE` - пассфраза от удаленного сервера
+`TELEGRAM_TO` - ваш телеграм id
+`TELEGRAM_TOKEN` - token вашего бота
 
-Скопируйте содержимое файла `.github/workflows/main.yml` в файл `kittygram_workflow.yml` в корневой директории проекта.
+### НА УДАЛЕННОМ СЕРВЕРЕ: 
+  
+Установите Docker Compose поочередно выполнив команды
+```
+sudo apt update
+sudo apt install curl
+curl -fSL https://get.docker.com -o get-docker.sh
+sudo sh ./get-docker.sh
+sudo apt-get install docker-compose-plugin
+```
+  
+Откройте настрой nginx в редакторе nano:
+```
+sudo nano /etc/nginx/sites-enabled/default
+```
+  
+Отредактируйте по шаблону:
+```
+server {
+    server_name <ip-вашего сервера> <ваше доменное имя>;
+    server_tokens off;
+    location /api/ {
+        proxy_pass http://127.0.0.1:9000;
+    }
+    location /admin/ {
+        proxy_pass http://127.0.0.1:9000;
+    }
+    location / {
+        proxy_pass http://127.0.0.1:9000;
+    }
+}
+```
+  
+Перейдите в корневую директорию, создайте папку kittygram и перейдите в нее:
+```
+cd
+mkdir kittygram
+cd kittygram
+```
+  
+Создать файл .evn на примере .env.example в корне проекта репозитория.
+  
+Скопируйте docker-compose.production.yml в корневую дирректорию удобным для вас способом
+  
+Запустить docker-compose.production в режиме демона:
+```
+docker compose -f docker-compose.production.yml up -d
+```
+  
+Выполнить миграции и собрать статику бэкенда:
+```
+docker compose -f docker-compose.production.yml exec backend python manage.py migrate
+docker compose -f docker-compose.production.yml exec backend python manage.py collectstatic
+docker compose -f docker-compose.production.yml exec backend cp -r /app/collected_static/. /back_static/static/
 
-Для локального запуска тестов создайте виртуальное окружение, установите в него зависимости из backend/requirements.txt и запустите в корневой директории проекта `pytest`.
-
-## Чек-лист для проверки перед отправкой задания
-
-- Проект Taski доступен по доменному имени, указанному в `tests.yml`.
-- Проект Kittygram доступен по доменному имени, указанному в `tests.yml`.
-- Пуш в ветку main запускает тестирование и деплой Kittygram, а после успешного деплоя вам приходит сообщение в телеграм.
-- В корне проекта есть файл `kittygram_workflow.yml`.
+```
+  
+Создать суперпользователя, ввести почту, логин, пароль:
+  
+```
+docker compose -f docker-compose.production.yml exec backend python manage.py createsuperuser
+```
+  
+Готово!
+  
+## АВТОР
+Оскомова Ксения
