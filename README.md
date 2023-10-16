@@ -24,17 +24,17 @@
 git clone https://github.com/beta-Lilith/kittygram_final.git 
 ```
   
-Добавить секреты для Actions на GitHub:
-(kittygram_final -> Settings -> Secrets and variables -> Actions)
-`DOCKER_PASSWORD` - пароль учетной записи DockerHub
-`DOCKER_USERNAME` - имя пользователя учетной записи Docker Hub
-`HOST` - ip-адресс вашего удаленного сервера
-`USER` - имя пользователя на удаленном сервере
-`SSH_KEY` - закрытый SSH ключ от удаленного сервера
-`SSH_PASSPHRASE` - пассфраза от удаленного сервера
-`TELEGRAM_TO` - ваш телеграм id
-`TELEGRAM_TOKEN` - token вашего бота
-
+Добавить секреты для Actions на GitHub:  
+(kittygram_final -> Settings -> Secrets and variables -> Actions)  
+`DOCKER_PASSWORD` - пароль учетной записи DockerHub  
+`DOCKER_USERNAME` - имя пользователя учетной записи Docker Hub  
+`HOST` - ip-адресс вашего удаленного сервера  
+`USER` - имя пользователя на удаленном сервере  
+`SSH_KEY` - закрытый SSH ключ от удаленного сервера  
+`SSH_PASSPHRASE` - пассфраза от удаленного сервера  
+`TELEGRAM_TO` - ваш телеграм id  
+`TELEGRAM_TOKEN` - token вашего бота  
+  
 ### НА УДАЛЕННОМ СЕРВЕРЕ: 
   
 Установите Docker Compose поочередно выполнив команды
